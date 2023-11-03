@@ -2,6 +2,7 @@ import math
 import numpy as np
 import torch
 import torch.nn as nn
+from pytorch3d.ops import sample_farthest_points
 
 from ....ops.pointnet2.pointnet2_stack import pointnet2_modules as pointnet2_stack_modules
 from ....ops.pointnet2.pointnet2_stack import pointnet2_utils as pointnet2_stack_utils
@@ -284,9 +285,8 @@ class VoxelSetAbstractionTransFusionv5(nn.Module):
                     cur_pt_idxs[0, -empty_num:] = cur_pt_idxs[0, :empty_num]
 
                 keypoints = sampled_points[0][cur_pt_idxs[0]].unsqueeze(dim=0)
-
-            elif self.model_cfg.SAMPLE_METHOD == 'FastFPS':
-                raise NotImplementedError
+            elif self.model_cfg.SAMPLE_METHOD == 'PyTorch3DFPS':
+                keypoints = sample_farthest_points(sampled_points, lengths=None, K=self.model_cfg.NUM_KEYPOINTS)[0]
             else:
                 raise NotImplementedError
 

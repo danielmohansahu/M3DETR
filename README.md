@@ -125,6 +125,8 @@ conda create -n m3detr python=3.10 -y
 conda activate m3detr
 conda install pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia
 pip install spconv-cu120 cython numpy==1.25
+conda install -c fvcore -c iopath -c conda-forge fvcore iopath
+FORCE_CUDA=1 pip install "git+https://github.com/facebookresearch/pytorch3d.git@stable"
 git clone https://github.com/danielmohansahu/M3DETR.git
 cd M3DETR
 python setup.py develop
